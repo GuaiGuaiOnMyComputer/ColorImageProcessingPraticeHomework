@@ -35,3 +35,6 @@
 # large files
 *.zip
 *.mp4
+
+# matlab cache
+*.asv
