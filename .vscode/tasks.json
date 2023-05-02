@@ -10,8 +10,10 @@
             "args": [
                 "${file}",
                 "-g",
-                "-I", "C:\\Program Files\\OpenCV\\build\\include",
-                "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "-I", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\include",
+                "-L", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\x64\\mingw\\bin",
+                "-llibopencv_world470",
+                "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe",
             ],
             "group": "build",
             "presentation": {
