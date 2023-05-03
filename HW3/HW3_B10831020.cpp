@@ -16,8 +16,8 @@ int main()
     cv::Mat imgOrig = cv::imread("Sun_oil.jpg", cv::IMREAD_COLOR);
     L1 faceSmoothener = L1(imgOrig);
     L1::FaceSmoothenConfig faceSmoothConfig = faceSmoothener.GetConfig(g_WINDOWNAME);
-    cv::createTrackbar("Smoothness", g_WINDOWNAME, &smoothnessVal, 100, L1::SmoothenFace);
+    cv::createTrackbar("Smoothness", g_WINDOWNAME, nullptr, 100, L1::SmoothenFace);
+    cv::setTrackbarPos("Smoothness", g_WINDOWNAME, 0);
 
-    L1::SmoothenFace(smoothnessVal, &faceSmoothConfig);
     cv::waitKey();
 }
