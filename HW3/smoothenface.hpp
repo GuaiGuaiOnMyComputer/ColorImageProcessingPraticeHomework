@@ -42,22 +42,30 @@ class L1
         void m_MakeFaceMask()
         {
             cv::Mat imgHsv(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
-            cv::cvtColor(imgHsv, imgHsv, cv::COLOR_BGR2HSV);
+            cv::cvtColor(m_original, imgHsv, cv::COLOR_BGR2HSV);
             cv::inRange(imgHsv, cv::Scalar(0, 20, 80), cv::Scalar(40, 255, 255), m_FaceMask);
+            m_FaceMask /= 255;
 
-            cv::Mat erosionElement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(13, 13));
+            cv::Mat erosionElement = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(17, 17));
             cv::erode(m_FaceMask, m_FaceMask, erosionElement);
 
-            for (size_t i = 0; i < m_ImgSize.height * m_ImgSize.width; i += 3){
-                m_OriginalFace.data[i + 0] = m_FaceMask.data[i];
-                m_OriginalFace.data[i + 3] = m_FaceMask.data[i];
-                m_OriginalFace.data[i + 2] = m_FaceMask.data[i];
+            for (size_t pixel = 0; pixel < m_ImgSize.height * m_ImgSize.width; pixel ++){
+                for (size_t chan = 0; chan < 3; chan++){
+                    m_OriginalFace.data[3 * pixel + chan] = m_original.data[3 * pixel + chan] * m_FaceMask.data[pixel];
+                }
             }
-            for (size_t i = 0; i < m_ImgSize.height * m_ImgSize.width; i += 3){
-                m_BackGround.data[i + 0] = 255 - m_FaceMask.data[i];
-                m_BackGround.data[i + 3] = 255 - m_FaceMask.data[i];
-                m_BackGround.data[i + 2] = 255 - m_FaceMask.data[i];
+            for (size_t pixel = 0; pixel < m_ImgSize.height * m_ImgSize.width; pixel ++){
+                for (size_t chan = 0; chan < 3; chan++){
+                    m_BackGround.data[3 * pixel + chan] = m_original.data[3 * pixel + chan] * (1 - m_FaceMask.data[pixel]);
+                }
             }
+
+            cv::imshow("original", m_original);
+            cv::imshow("mask", m_FaceMask * 255);
+            cv::imshow("face area", m_OriginalFace);
+            cv::imshow("background", m_BackGround);
+
+            cv::waitKey();
         }
 
     private:
