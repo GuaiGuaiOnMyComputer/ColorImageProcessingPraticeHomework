@@ -13,7 +13,7 @@
                 "-I", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\include",
                 "-L", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\x64\\mingw\\bin",
                 "-llibopencv_world470",
-                "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-o", "${workspaceFolder}\\bin\\windows64\\${fileBasenameNoExtension}.exe",
             ],
             "group": "build",
             "presentation": {
@@ -33,7 +33,7 @@
                 "-I", "\\usr\\local\\include\\opencv4",
                 "-L", "\\usr\\local\\lib",
                 "-llibopencv_core.so.460",
-                "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-o", "${workspaceFolder}\\bin\\linux\\${fileBasenameNoExtension}.exe",
             ],
             "group": "build",
             "presentation": {
