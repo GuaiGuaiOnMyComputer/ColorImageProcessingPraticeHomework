@@ -7,9 +7,9 @@
 class L1
 {
     public:
-        struct FaceSmoothenConfig
+        struct SmthCfg
         {
-            std::unique_ptr<L1> Smoothener_ptr;
+            L1 &Smth_ref;
             const char* WindowName;
         };
 
@@ -24,24 +24,24 @@ class L1
         static void SmoothenFace(int pos, void* smoothenerStruct)
         {
             static cv::Mat tmp(ms_Height, ms_Width, CV_8UC3);
-            FaceSmoothenConfig* cfg = static_cast<FaceSmoothenConfig*>(smoothenerStruct);
-            const cv::Mat &faceArea = cfg->Smoothener_ptr->m_OriginalFace;
-            const cv::Mat &bgArea = cfg->Smoothener_ptr->m_Background;
-            const cv::Mat &mask = cfg->Smoothener_ptr->m_FaceMask;
-            cv::GaussianBlur(faceArea, tmp, cv::Size(11, 11), pos, pos);
-            for (size_t pixel = 0; pixel < cfg->Smoothener_ptr->m_ImgSize.height * cfg->Smoothener_ptr->m_ImgSize.width; pixel++){
+            SmthCfg* cfg_ptr = (SmthCfg*)(smoothenerStruct);
+            const cv::Mat &faceArea = cfg_ptr->Smth_ref.m_OriginalFace;
+            const cv::Mat &bgArea = cfg_ptr->Smth_ref.m_Background;
+            const cv::Mat &mask = cfg_ptr->Smth_ref.m_FaceMask;
+            cv::blur(faceArea, tmp, cv::Size(11, 11));
+            for (size_t pixel = 0; pixel < ms_Height * ms_Width; pixel++){
                 tmp.data[3 * pixel + 0] = mask.data[pixel] != 0 ? tmp.data[3 * pixel + 0] : bgArea.data[3 * pixel + 0];
                 tmp.data[3 * pixel + 1] = mask.data[pixel] != 0 ? tmp.data[3 * pixel + 1] : bgArea.data[3 * pixel + 1];
                 tmp.data[3 * pixel + 2] = mask.data[pixel] != 0 ? tmp.data[3 * pixel + 2] : bgArea.data[3 * pixel + 2];
             }
-            cv::imshow(cfg->WindowName, tmp);
+            cv::imshow(cfg_ptr->WindowName, tmp);
         }
 
-        inline FaceSmoothenConfig GetConfig(const char* windowName)
+        inline SmthCfg GetConfig(const char* windowName)
         {
             ms_Height = m_ImgSize.height;
             ms_Width = m_ImgSize.width;
-            return FaceSmoothenConfig{std::unique_ptr<L1>(this), windowName};
+            return SmthCfg{ *this, windowName};
         }
 
     private:
