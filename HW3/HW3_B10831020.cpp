@@ -9,7 +9,6 @@ int L1::ms_Height, L1::ms_Width;
 
 int main()
 {
-    // ss();
     int smoothnessVal{0};
     cv::namedWindow(g_WINDOWNAME, cv::WINDOW_AUTOSIZE);
 

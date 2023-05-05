@@ -28,7 +28,7 @@ class L1
             const cv::Mat &faceArea = cfg_ptr->Smth_ref.m_OriginalFace;
             const cv::Mat &bgArea = cfg_ptr->Smth_ref.m_Background;
             const cv::Mat &mask = cfg_ptr->Smth_ref.m_FaceMask;
-            cv::blur(faceArea, tmp, cv::Size(11, 11));
+            cv::GaussianBlur(faceArea, tmp, cv::Size(11, 11), pos, pos);
             for (size_t pixel = 0; pixel < ms_Height * ms_Width; pixel++){
                 tmp.data[3 * pixel + 0] = mask.data[pixel] != 0 ? tmp.data[3 * pixel + 0] : bgArea.data[3 * pixel + 0];
                 tmp.data[3 * pixel + 1] = mask.data[pixel] != 0 ? tmp.data[3 * pixel + 1] : bgArea.data[3 * pixel + 1];
@@ -76,13 +76,3 @@ class L1
         static int ms_Width, ms_Height;
 
 };
-
-// void ss()
-// {
-//     cv::Mat a = 7 * cv::Mat::ones(3, 7, CV_8UC3);
-//     cv::Mat b = 2 * cv::Mat::ones(3, 7, CV_8UC3);
-//     cv::Mat c = 3 * cv::Mat::ones(3, 7, CV_8UC3);
-
-//     const cv::Mat &ar = a;
-//     c = ar.mul(b);
-// }
