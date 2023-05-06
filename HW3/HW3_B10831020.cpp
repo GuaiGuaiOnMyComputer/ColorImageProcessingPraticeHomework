@@ -18,7 +18,7 @@ int main()
     cv::imshow(g_WINDOWNAME, dispImg);
     L1 faceSmoothener = L1(imgOrig);
     L1::SmthCfg faceSmoothConfig = faceSmoothener.GetConfig(g_WINDOWNAME, dispImg);
-    L2::IvrtCfg colorIvrtConfig = L2::GetConfig(g_WINDOWNAME, dispImg);
+    L2::IvrtCfg colorIvrtConfig = L2::GetConfig(g_WINDOWNAME, faceSmoothener);
     cv::createTrackbar("Smoothness", g_WINDOWNAME, nullptr, 100, L1::SmoothenCbk, &faceSmoothConfig);
     cv::createTrackbar("Invert", g_WINDOWNAME, nullptr, dispImg.cols, L2::invertCbk, &colorIvrtConfig);
     cv::setTrackbarPos("Smoothness", g_WINDOWNAME, 0);

@@ -19,6 +19,7 @@ class L1
             m_FaceMask = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8U);
             m_OriginalFace = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
             m_Background = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
+            s_SmthReult = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
             m_MakeFaceMask();
         }
 
@@ -36,7 +37,6 @@ class L1
             tmp += bgArea;
             
             cv::addWeighted(tmp, smoothness, originalImg, 1 - smoothness, 0, dispImg_ref);
-            cv::imshow(cfg_ptr->WindowName, dispImg_ref);
         }
 
         inline SmthCfg GetConfig(const char* windowName, cv::Mat &dispImg)
@@ -45,6 +45,8 @@ class L1
             ms_Width = m_ImgSize.width;
             return SmthCfg{ *this, windowName, dispImg};
         }
+    public:
+        cv::Mat s_SmthReult;
 
     private:
         void m_MakeFaceMask()
