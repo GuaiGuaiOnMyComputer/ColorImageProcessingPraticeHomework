@@ -9,9 +9,17 @@ class L2
             const char* windowName;
             cv::Mat &dispImg;
         };
-        
-        static void invertCbk(int, void*)
-        {
 
+        inline static IvrtCfg GetConfig(const char* windowName, cv::Mat &dispImg)
+        {
+            return IvrtCfg{windowName, dispImg};
+        }
+
+        static void invertCbk(int pos, void* cfg)
+        {
+            IvrtCfg *cfg_ptr = (IvrtCfg *)(cfg);
+            cv::Mat ivrtCols = cfg_ptr->dispImg.colRange(0, pos);
+            ivrtCols = cv::Scalar(255, 255, 255) - ivrtCols;
+            cv::imshow(cfg_ptr->windowName, cfg_ptr->dispImg);
         }
 };
