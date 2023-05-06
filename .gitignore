@@ -33,7 +33,7 @@
 
 # Binary
 bin/
-*/bin/
+# */bin/
 
 
 # large files
@@ -44,4 +44,4 @@ bin/
 *.asv
 
 # vscode environment
-.vscode/
+# .vscode/
