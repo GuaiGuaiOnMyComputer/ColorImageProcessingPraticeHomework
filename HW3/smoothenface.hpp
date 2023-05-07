@@ -13,10 +13,10 @@ public:
 public:
     L1(const cv::Mat &orig):CommonBase(orig)
     {
-        s_SmthResult = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_FaceMask = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_OriginalFace = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_Background = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
+        s_SmthResult = orig.clone();
         m_MakeFaceMask();
     }
 
