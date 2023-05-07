@@ -9,9 +9,6 @@ constexpr char g_WINDOWNAME[] = "HW3_B10831020";
 
 int main()
 {
-    int smoothnessVal{0};
-    int ivrtVal{0};
-
     cv::namedWindow(g_WINDOWNAME, cv::WINDOW_AUTOSIZE);
 
     cv::Mat imgOrig = cv::imread("Sun_oil.jpg", cv::IMREAD_COLOR);
