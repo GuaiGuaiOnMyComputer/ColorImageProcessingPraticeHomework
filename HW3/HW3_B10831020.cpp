@@ -19,8 +19,8 @@ int main()
     Renderer rend(imgOrig);
     cv::Mat dispImg = imgOrig.clone();
     cv::imshow(g_WINDOWNAME, dispImg);
-    cv::createTrackbar("Smoothness", g_WINDOWNAME, nullptr, 100, L1::SmoothenCbk, &rend);
-    cv::createTrackbar("Invert", g_WINDOWNAME, nullptr, dispImg.cols, L2::invertCbk, &rend);
+    cv::createTrackbar("Smoothness", g_WINDOWNAME, nullptr, 100, Renderer::SmoothenCbk, &rend);
+    cv::createTrackbar("Invert", g_WINDOWNAME, nullptr, dispImg.cols, Renderer::InvertCbk, &rend);
     cv::setTrackbarPos("Smoothness", g_WINDOWNAME, 0);
     cv::setTrackbarPos("Invert", g_WINDOWNAME, 0);
 

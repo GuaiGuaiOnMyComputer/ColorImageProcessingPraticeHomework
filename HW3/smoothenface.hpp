@@ -9,11 +9,11 @@
 class L1 : public CommonBase
 {
 public:
-    cv::Mat s_SmthReult;
+    static cv::Mat s_SmthResult;
 public:
     L1(const cv::Mat &orig):CommonBase(orig)
     {
-        s_SmthReult = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
+        s_SmthResult = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_FaceMask = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_OriginalFace = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_Background = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
@@ -26,15 +26,10 @@ public:
         cv::Mat &dispImg_ref;
     };
 
-    static void SmoothenCbk(int pos, void* smoothenerStruct)
+    void SmoothenFace(int smoothness)
     {
-        float smoothness = (float)pos / 100;
-        L1* cfg_ptr = (L1*)(smoothenerStruct);
-        cv::GaussianBlur(cfg_ptr->m_OriginalFace, s_SmthResult, cv::Size(13, 13), 100, 100);
-        s_SmthResult += cfg_ptr->m_Background;
-        cv::addWeighted(s_SmthResult, smoothness, cfg_ptr->CommonBase::m_Original, 1 - smoothness, 0, cfg_ptr->s_SmthResult);
-    }
 
+    }
 
 protected:
     void m_MakeFaceMask()
@@ -49,9 +44,6 @@ protected:
         cv::copyTo(m_Original, m_OriginalFace, m_FaceMask);
         cv::copyTo(m_Original, m_Background, 1 - m_FaceMask);
     }
-
-protected:
-    static cv::Mat s_SmthResult;
 
 private:
     cv::Mat m_FaceMask;

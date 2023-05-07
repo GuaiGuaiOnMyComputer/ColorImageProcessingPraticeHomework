@@ -6,20 +6,38 @@
 class Renderer : public L1, public L2
 {
 public:
+    int SmoothenBarVal;
+
+public:
+
     Renderer(const cv::Mat& original):L1(original), L2(original)
     {
     }
 
-    inline L1::SmthCfg GetConfig(const char* windowName, cv::Mat &dispImg)
+    static void SmoothenCbk(int pos, void* rendObj_ptr)
     {
-        return L1::SmthCfg{ *static_cast<L1*>(this), windowName, dispImg};
+        float smoothness = (float)pos / 100;
+        Renderer* rnder_ptr = (Renderer*)(rendObj_ptr);
+        rnder_ptr->SmoothenBarVal = pos;
+        rnder_ptr->SmoothenFace(smoothness);
+        m_ShowImg(*rnder_ptr);
     }
 
-public:
-    cv::Mat s_SmthReult;
+    static void InvertCbk(int pos, void* rendObj_ptr)
+    {
+        Renderer *rnder_ptr = (Renderer *)(rendObj_ptr);
+        static int previousSmoothVal = rnder_ptr->SmoothenBarVal;
+        int currentSmoothVal = rnder_ptr->SmoothenBarVal;
+        if (currentSmoothVal != previousSmoothVal)
+            s_IvrtResult = 
+        cv::Mat ivrtRng = rnder_ptr->s_SmthResult.colRange(0, pos);
 
-protected:
+        rnder_ptr->s_IvrtResult
+    }
 
-protected:
-    static cv::Mat ps_SmthResult;
+private:
+    static void m_ShowImg(Renderer &rnd)
+    {
+
+    }
 };
