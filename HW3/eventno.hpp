@@ -3,5 +3,5 @@
 enum Events
 {
     SMOOTHEN_TRACKBAR,
-    INVERRT_TRACKBAR
+    INVERT_TRACKBAR
 };
