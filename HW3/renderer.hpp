@@ -2,42 +2,51 @@
 #include <opencv2/imgproc.hpp>
 #include "smoothenface.hpp"
 #include "invertcolor.hpp"
+#include "eventno.hpp"
 
 class Renderer : public L1, public L2
 {
 public:
-    int SmoothenBarVal;
-
-public:
-
-    Renderer(const cv::Mat& original):L1(original), L2(original)
+    static int s_IvrtTrackbarPos;
+    struct CbkArgLst
     {
+        Renderer* rndObj_ptr;
+        Events eventNo;
+    };
+
+
+    Renderer(const cv::Mat& original, const char* windowName):L1(original), L2(original), m_WindowName(windowName)
+    {
+        s_IvrtTrackbarPos = 0;
     }
 
-    static void SmoothenCbk(int pos, void* rendObj_ptr)
+    static void CommonTrackbarCbk(int pos, void* argLst)
     {
-        float smoothness = (float)pos / 100;
-        Renderer* rnder_ptr = (Renderer*)(rendObj_ptr);
-        rnder_ptr->SmoothenBarVal = pos;
-        rnder_ptr->SmoothenFace(smoothness);
-        m_ShowImg(*rnder_ptr);
-    }
+        CbkArgLst &args = *static_cast<CbkArgLst*>(argLst);
+        Renderer rndObj = *args.rndObj_ptr;
+        Events eventType = args.eventNo;
+        switch (eventType)
+        {
+        case SMOOTHEN_TRACKBAR:
+            rndObj.c_SmoothenFace(pos);
+            rndObj.c_InvertColor(rndObj.s_SmthResult, rndObj.s_IvrtTrackbarPos);
+            break;
 
-    static void InvertCbk(int pos, void* rendObj_ptr)
-    {
-        Renderer *rnder_ptr = (Renderer *)(rendObj_ptr);
-        static int previousSmoothVal = rnder_ptr->SmoothenBarVal;
-        int currentSmoothVal = rnder_ptr->SmoothenBarVal;
-        if (currentSmoothVal != previousSmoothVal)
-            s_IvrtResult = 
-        cv::Mat ivrtRng = rnder_ptr->s_SmthResult.colRange(0, pos);
-
-        rnder_ptr->s_IvrtResult
+        case INVERT_TRACKBAR:
+            rndObj.c_InvertColor(pos, rndObj.s_SmthResult);
+            break;
+        }
+        rndObj.m_ShowImg();
     }
 
 private:
-    static void m_ShowImg(Renderer &rnd)
+    void m_ShowImg()
     {
-
+        cv::imshow(m_WindowName, s_IvrtResult);
     }
+
+private:
+    const char* m_WindowName;
 };
+
+int Renderer::s_IvrtTrackbarPos;

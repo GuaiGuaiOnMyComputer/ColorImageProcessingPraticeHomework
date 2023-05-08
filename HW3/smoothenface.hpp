@@ -13,25 +13,27 @@ public:
 public:
     L1(const cv::Mat &orig):CommonBase(orig)
     {
-        s_SmthResult = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_FaceMask = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_OriginalFace = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
         m_Background = cv::Mat::zeros(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
+        s_SmthResult = orig.clone();
         m_MakeFaceMask();
-    }
-    struct SmthCfg
-    {
-        L1 &Smoothen_ref;
-        const char* WindowName;
-        cv::Mat &dispImg_ref;
-    };
-
-    void SmoothenFace(int smoothness)
-    {
-
     }
 
 protected:
+    void c_SmoothenFace(int smthBarPos)
+    {
+        m_SmoothenBarPos = smthBarPos;
+        m_Smoothness = (float)smthBarPos / 100;
+        cv::GaussianBlur(m_OriginalFace, s_SmthResult, cv::Size2d(13, 13), 100, 100);
+        s_SmthResult += m_Background;
+        cv::addWeighted(s_SmthResult, m_Smoothness, m_Original, 1.0 - m_Smoothness, 0, s_SmthResult);
+    }
+
+private:
+    int m_SmoothenBarPos;
+
+private:
     void m_MakeFaceMask()
     {
         cv::Mat imgHsv(m_ImgSize.height, m_ImgSize.width, CV_8UC3);
@@ -46,6 +48,7 @@ protected:
     }
 
 private:
+    float m_Smoothness;
     cv::Mat m_FaceMask;
     cv::Mat m_OriginalFace;
     cv::Mat m_Background;
