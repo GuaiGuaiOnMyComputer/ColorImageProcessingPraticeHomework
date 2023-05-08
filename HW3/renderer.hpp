@@ -36,13 +36,7 @@ public:
             rndObj.c_InvertColor(pos, rndObj.s_SmthResult);
             break;
         }
-        rndObj.m_ShowImg();
-    }
-
-private:
-    void m_ShowImg()
-    {
-        cv::imshow(m_WindowName, s_IvrtResult);
+        cv::imshow(rndObj.m_WindowName, s_IvrtResult);
     }
 
 private:
