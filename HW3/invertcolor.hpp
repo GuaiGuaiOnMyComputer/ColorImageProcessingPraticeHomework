@@ -11,6 +11,9 @@ public:
     {
         s_IvrtResult = imgOrig.clone();
     }
+
+    virtual ~L2(){};
+    
 public:
     static cv::Mat s_IvrtResult;
 

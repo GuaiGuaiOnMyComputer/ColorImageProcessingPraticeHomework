@@ -20,6 +20,8 @@ public:
         m_MakeBlurredFace();
     }
 
+    virtual ~L1(){}
+
 protected:
     void c_SmoothenFace(int smthBarPos)
     {
