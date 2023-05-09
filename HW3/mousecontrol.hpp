@@ -9,25 +9,28 @@
 class L3
 {
 public:
-    L3():m_HoldingLeftButton(false)
-    {}
-
-    void c_LeftButtonDownCbk(int x, int y, const cv::Mat &ivrtResult, cv::Mat &dispImg)
+    L3() : m_LineCount(0)
     {
-        m_HoldingLeftButton = true;
+        c_Points = std::vector<cv::Point2d>();
+        c_Points.reserve(10);
+    }
+
+    void c_LeftButtonDownCbk(int x, int y)
+    {
         c_Points.emplace_back(x, y);
     }
 
     void c_LeftButtonUpCbk(int x, int y, const cv::Mat &ivrtResult, cv::Mat &dispImg)
     {
-        m_HoldingLeftButton = false;
         c_Points.emplace_back(x, y);
+        cv::line(dispImg, c_Points[c_Points.size()-1], c_Points[c_Points.size()-2], cv::Scalar(0, 0, 255));
+        m_LineCount += 1;
     }
 
 protected:
     std::vector<cv::Point2d> c_Points;
 
 private:
-    bool m_HoldingLeftButton;
+    int m_LineCount;
 
 };

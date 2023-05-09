@@ -48,7 +48,7 @@ public:
         switch (event)
         {
         case cv::EVENT_LBUTTONDOWN:
-            rndObj.c_LeftButtonDownCbk(x, y, s_IvrtResult, s_DisplayImg);
+            rndObj.c_LeftButtonDownCbk(x, y);
             break;
         case cv::EVENT_LBUTTONUP:
             rndObj.c_LeftButtonUpCbk(x, y, s_IvrtResult, s_DisplayImg);
