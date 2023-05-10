@@ -1,14 +1,20 @@
 #pragma once
-
+/*
+This class is only meant to be inherited by class L1, L2 and Render, so the derived classes can share the following properties:
+    * c_ImgSize
+    * c_Original
+    * c_Width
+    * c_Height
+Both class L1 and L2 calls the constructor of class CommonBase
+*/
 #include <opencv2/imgcodecs.hpp>
 
 class CommonBase
 {
 protected:
-    CommonBase(const cv::Mat &imgOrg):m_ImgSize(imgOrg.size()), m_Original(imgOrg)
+    CommonBase(const cv::Mat &imgOrg):c_ImgSize(imgOrg.size()), c_Original(imgOrg)
     {}
-public:
-    const cv::Size2d m_ImgSize;
-    const cv::Mat &m_Original;
-    int m_Width, m_Height;
+    const cv::Size2d c_ImgSize;
+    const cv::Mat &c_Original;
+    int c_Width, c_Height;
 };
