@@ -36,6 +36,20 @@ public:
     }
 
     /*
+        Press R, r or space bar to reset the displayed image. Move both trackbars to 0 and remove all the lines drawn.
+    */
+    void Reset()
+    {
+        cv::setTrackbarPos("Smoothness", m_WindowName, 0);
+        cv::setTrackbarPos("Invert", m_WindowName, 0);
+        c_DisposePoints();
+        c_SmoothenFace(s_SmthTrackbarPos);
+        c_InvertColor(s_IvrtTrackbarPos, s_SmthResult);
+        c_DrawLines(s_IvrtResult, s_DisplayImg);
+        cv::imshow(m_WindowName, s_DisplayImg);
+    }
+
+    /*
         The common callback function for the trackbars. The argument void* argLst is an instance pointer of 
         struct CbkArgLst. The member eventNo in CbkArgLst identifies which trackbar is being moved and use 
         switch-case statement to trigger the corresponding operations.

@@ -16,17 +16,17 @@ class L3
 public:
     L3() : m_LineCount(0)
     {
-        c_Points.reserve(10);
+        m_Points.reserve(10);
     }
 
     inline void c_AddLineStartPt(int x, int y)
     {
-        c_Points.emplace_back(x, y);
+        m_Points.emplace_back(x, y);
     }
 
     inline void c_AddLineEndPt(int x, int y)
     {
-        c_Points.emplace_back(x, y);
+        m_Points.emplace_back(x, y);
         m_LineCount++;
     }
 
@@ -38,12 +38,17 @@ public:
     {
         dispImg = ivrtResult.clone();
         for(size_t i = 0; i < m_LineCount; i++)
-            cv::line(dispImg, c_Points[2*i], c_Points[2*i+1], cv::Scalar(0, 0, 255), 8, cv::LineTypes::LINE_AA);
+            cv::line(dispImg, m_Points[2*i], m_Points[2*i+1], cv::Scalar(0, 0, 255), 8, cv::LineTypes::LINE_AA);
     }
 
 protected:
-    std::vector<cv::Point2d> c_Points; // stores the coordinates of all the points created by user
+    void c_DisposePoints()
+    {
+        m_Points.clear();
+        m_LineCount = 0;
+    }
 
 private:
+    std::vector<cv::Point2d> m_Points; // stores the coordinates of all the points created by user
     int m_LineCount;
 };

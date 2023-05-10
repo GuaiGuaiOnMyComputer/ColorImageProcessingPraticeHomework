@@ -9,6 +9,7 @@ constexpr char g_WINDOWNAME[] = "HW3_B10831020";
 
 int main()
 {
+    bool programRunning = true;
     cv::namedWindow(g_WINDOWNAME, cv::WINDOW_AUTOSIZE);
 
     cv::Mat imgOrig = cv::imread("Sun_oil.jpg", cv::IMREAD_COLOR);
@@ -22,7 +23,26 @@ int main()
     cv::setTrackbarPos("Smoothness", g_WINDOWNAME, 0);
     cv::setTrackbarPos("Invert", g_WINDOWNAME, 0);
 
-    cv::waitKey();
+    while (programRunning){
+        int keyAscii = cv::waitKeyEx();
+        switch (keyAscii)
+        {
+        case 32: // space key pressed
+            rend.Reset();
+            break;
+        case 82: // R key pressed
+            rend.Reset();
+            break;
+        case 114: // r key pressed
+            rend.Reset();
+            break;
+        case 27: // esc key pressed
+            programRunning = false;
+        default:
+            break;
+        }
+    }
+    
     cv::destroyAllWindows();
     return 0;
 }
