@@ -34,29 +34,33 @@ public:
         case SMOOTHEN_TRACKBAR:
             rndObj.c_SmoothenFace(pos);
             rndObj.c_InvertColor(rndObj.s_SmthResult, rndObj.s_IvrtTrackbarPos);
+            rndObj.c_DrawLines(s_IvrtResult, s_DisplayImg);
             break;
 
         case INVERT_TRACKBAR:
             rndObj.c_InvertColor(pos, rndObj.s_SmthResult);
+            rndObj.c_DrawLines(s_IvrtResult, s_DisplayImg);
             break;
         }
-        cv::imshow(rndObj.m_WindowName, s_IvrtResult);
+        cv::imshow(rndObj.m_WindowName, s_DisplayImg);
     }
+
     static void MouseCbk(int event, int x, int y, int _, void* userData)
     {
         Renderer &rndObj = *static_cast<Renderer*>(userData);
         switch (event)
         {
         case cv::EVENT_LBUTTONDOWN:
-            rndObj.c_LeftButtonDownCbk(x, y);
+            rndObj.c_AddLineStartPt(x, y);
             break;
         case cv::EVENT_LBUTTONUP:
-            rndObj.c_LeftButtonUpCbk(x, y, s_IvrtResult, s_DisplayImg);
+            rndObj.c_AddLineEndPt(x, y);
+            rndObj.c_DrawLines(s_IvrtResult, s_DisplayImg);
             break;
-
         default:
             break;
         }
+        cv::imshow(rndObj.m_WindowName, s_DisplayImg);
     }
 
 private:

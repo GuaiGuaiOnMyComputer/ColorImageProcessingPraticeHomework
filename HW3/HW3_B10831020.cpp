@@ -18,7 +18,7 @@ int main()
     cv::imshow(g_WINDOWNAME, imgOrig);
     cv::createTrackbar("Smoothness", g_WINDOWNAME, &Renderer::s_SmthTrackbarPos, 100, Renderer::CommonTrackbarCbk, (void*)&smthTrackBarArgs);
     cv::createTrackbar("Invert", g_WINDOWNAME, &Renderer::s_IvrtTrackbarPos, imgOrig.cols, Renderer::CommonTrackbarCbk, (void*)&ivrtTrackBarArgs);
-    cv::setMouseCallback(g_WINDOWNAME, Renderer::MouseCbk);
+    cv::setMouseCallback(g_WINDOWNAME, Renderer::MouseCbk, (void*)&rend);
     cv::setTrackbarPos("Smoothness", g_WINDOWNAME, 0);
     cv::setTrackbarPos("Invert", g_WINDOWNAME, 0);
 
