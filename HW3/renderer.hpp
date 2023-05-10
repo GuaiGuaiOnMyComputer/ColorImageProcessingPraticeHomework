@@ -60,7 +60,7 @@ public:
         {
         case SMOOTHEN_TRACKBAR:
             rndObj.c_SmoothenFace(pos);
-            rndObj.c_InvertColor(rndObj.s_SmthResult, rndObj.s_IvrtTrackbarPos);
+            rndObj.c_InvertColor(rndObj.s_IvrtTrackbarPos, rndObj.s_SmthResult);
             rndObj.c_DrawLines(s_IvrtResult, s_DisplayImg);
             break;
 
