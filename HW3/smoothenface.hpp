@@ -15,7 +15,7 @@
 class L1 : public CommonBase
 {
 public:
-    static cv::Mat s_SmthResult;
+    static cv::Mat s_SmthResult; // the weighted sum of the original face and the blurred face, encluding the background
 public:
     L1(const cv::Mat &orig):CommonBase(orig)
     {
