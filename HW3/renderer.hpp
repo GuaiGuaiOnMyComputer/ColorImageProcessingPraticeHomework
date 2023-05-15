@@ -101,20 +101,12 @@ public:
     */
     static void MouseCbk(int event, int x, int y, int _, void* rnd_ptr)
     {
-        Renderer &rndObj = *static_cast<Renderer*>(rnd_ptr);
-        switch (event)
-        {
-        case cv::EVENT_LBUTTONDOWN:
+        if(event == cv::EVENT_LBUTTONDOWN){
+            Renderer &rndObj = *static_cast<Renderer*>(rnd_ptr);
             rndObj.c_AddLineStartPt(x, y);
-            break;
-        case cv::EVENT_LBUTTONUP:
-            rndObj.c_AddLineEndPt(x, y);
             rndObj.c_DrawLines(s_IvrtResult, s_DisplayImg);
-            break;
-        default:
-            break;
+            cv::imshow(rndObj.m_WindowName, s_DisplayImg);
         }
-        cv::imshow(rndObj.m_WindowName, s_DisplayImg);
     }
 
 private:
