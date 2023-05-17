@@ -24,12 +24,6 @@ public:
         m_Points.emplace_back(x, y);
     }
 
-    inline void c_AddLineEndPt(int x, int y)
-    {
-        m_Points.emplace_back(x, y);
-        m_LineCount++;
-    }
-
     /*
         Draws all the line to s_DisplayImg. Each pair of cv::Point2d in c_Points are treated as the start point and the end
         point of a line.
@@ -37,8 +31,8 @@ public:
     void c_DrawLines(const cv::Mat ivrtResult, cv::Mat &dispImg)
     {
         dispImg = ivrtResult.clone();
-        for(size_t i = 0; i < m_LineCount; i++)
-            cv::line(dispImg, m_Points[2*i], m_Points[2*i+1], cv::Scalar(0, 0, 255), 8, cv::LineTypes::LINE_AA);
+        for(size_t i = 0; i < m_Points.size() - 1 && m_Points.size() > 1; i++)
+            cv::line(dispImg, m_Points[i+1], m_Points[i], cv::Scalar(0, 0, 255), 8, cv::LineTypes::LINE_AA);
     }
 
 protected:
