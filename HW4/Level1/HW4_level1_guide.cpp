@@ -13,24 +13,19 @@
 #define COINS               20                 //銅板隨機掉落的總量，必須是整數，數值越低越稀疏
 
 
+struct CoinSpawnInfo;
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out);
+// void render();
 
 int main(void)
 {
 	/*變數(影像容器)宣告*/
 	auto rng = std::mt19937(time(0));
 	std::vector<cv::Mat> coins;
-	std::vector<cv::Mat> coinsBin;
-	loadCoinImgs(coins, coinsBin);
+	std::vector<cv::Mat> coinsMasks;
+	loadCoinImgs(coins, coinsMasks);
 	cv::Mat im1, im2, im3, im4;
 	cv::Mat im1Bin, im2Bin, im3Bin, im4Bin;
-
-	enum
-	{
-		COIN_SPAWN_FRAME,
-		COIN_TYPE,
-		COIN_POS
-	};
 
 	cv::VideoCapture cap(MOVING_VIDEO_PATH); //讀取背景影片
 	if (!cap.isOpened()) 
@@ -48,16 +43,16 @@ int main(void)
 	}
 	cv::namedWindow("Video"); //建立視訊視窗
 
-	int start[COINS][3]; //每個銅板的掉落起始畫面編號、種類、水平位置
+	CoinSpawnInfo coinSpawnInfo[COINS]; //每個銅板的掉落起始畫面編號、種類、水平位置
 	for (int i = 0; i < COINS; i++)
 	{
-		start[i][COIN_SPAWN_FRAME] = rng() % (FRAME_COUNT - 100);     // 銅板i的起始畫面編號(隨機)
-		start[i][COIN_TYPE]        = rng() % 5;                       // 銅板i的種類(隨機)
-		start[i][COIN_POS]         = rng() % (frameSize.width - 150); // 銅板i的水平方向位置(隨機)
+		coinSpawnInfo[i].SpawnFrame = rng() % (FRAME_COUNT - 100);     // 銅板i的起始畫面編號(隨機)
+		coinSpawnInfo[i].CoinType   = rng() % 5;                       // 銅板i的種類(隨機)
+		coinSpawnInfo[i].x   = rng() % (frameSize.width - 150); // 銅板i的水平方向位置(隨機)
 	}
 
 	//用for迴圈讀取每一畫格
-	for (int n = 0; n < FRAME_COUNT; n++)
+	for (int frameIdx = 0; frameIdx < FRAME_COUNT; frameIdx++)
 	{
 		cv::Mat im_bg;
 		cap >> im_bg; //讀取背景影像
@@ -70,35 +65,11 @@ int main(void)
 		//將第i 個銅板掉落影像加入背景影像的迴圈
 		for (int i = 0; i < COINS; i++)
 		{
-			int y = 5 * (n - start[i][0]); //銅板i矩形框的y座標(矩形框上緣的垂直方向座標)
-			if (y > 0 && y < frameSize.height-150) //如果銅板i矩形框(垂直方向)在畫面範圍內，執行下列動作
+			int y = 5 * (frameIdx - coinSpawnInfo[i].SpawnFrame); //銅板i矩形框的y座標(矩形框上緣的垂直方向座標)
+			if (y > 0 && y < frameSize.height - 150) //如果銅板i矩形框(垂直方向)在畫面範圍內，執行下列動作
 			{
-				// switch (start[i][1]) //根據銅板i的種類，選擇銅板影像
-				// {
-				// 	case 1: //1元硬幣
-				// 	{
-				// 		...  //根據start[i][2]與y的位置，建立 roi1 矩形框(Rect type)
-				// 		... //將 im1 複製到 im_bg 的矩形框，以 im1_gray 為遮罩
-				// 		break; //離開 switch
-				// 	}
-				// 	case 2: //5元硬幣
-				// 	{
-				// 		...  //根據start[i][2]與y的位置，建立 roi2 矩形框(Rect type)
-				// 		... //將 im2 複製到 im_bg 的矩形框，以 im2_gray 為遮罩
-				// 		break; //離開 switch
-				// 	}
-				// 	case 3: //10元硬幣
-				// 	{
-				// 		...  //根據start[i][2]與y的位置，建立 roi3 矩形框(Rect type)
-				// 		... //將 im3 複製到 im_bg 的矩形框，以 im3_gray 為遮罩
-				// 		break; //離開 switch
-				// 	}
-				// 	case 4: //50元硬幣
-				// 	{
-				// 		...  //根據start[i][2]與y的位置，建立 roi4 矩形框(Rect type)
-				// 		... //將 im4 複製到 im_bg 的矩形框，以 im4_gray 為遮罩
-				// 	};
-				// }
+				cv::Mat coinRoi = im_bg(cv::Rect(coinSpawnInfo[i].x, y, coins[i].cols, coins[i].rows));
+				coins[coinSpawnInfo[i].CoinType].copyTo(coinRoi, coinsMasks[coinSpawnInfo[i].CoinType]);
 			}
 		}
 
@@ -107,9 +78,15 @@ int main(void)
 		dropVid << im_bg; //匯出影像到要輸出的視訊檔
 	}
 	std::cout << "please check: data/drop.mp4" << std::endl; //顯示輸出視訊的路徑/檔名
-
 	return 0;
 }
+
+struct CoinSpawnInfo
+{
+	uint64_t SpawnFrame;
+	uint8_t  CoinType;
+	uint16_t x;
+};
 
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out)
 {
