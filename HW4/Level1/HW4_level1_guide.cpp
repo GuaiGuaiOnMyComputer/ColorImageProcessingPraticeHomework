@@ -12,16 +12,15 @@
 #define COIN50_PATH         "data/c50.png"     // The path to the coin
 #define COINS               20                 //銅板隨機掉落的總量，必須是整數，數值越低越稀疏
 
-using Mat_ptr = std::unique_ptr<cv::Mat>;
 
-void loadCoinImgs(std::vector<Mat_ptr>& coins_out, std::vector<Mat_ptr>& coinsBin_out);
+void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out);
 
 int main(void)
 {
 	/*變數(影像容器)宣告*/
 	auto rng = std::mt19937(time(0));
-	std::vector<std::unique_ptr<cv::Mat>> coins;
-	std::vector<std::unique_ptr<cv::Mat>> coinsBin;
+	std::vector<cv::Mat> coins;
+	std::vector<cv::Mat> coinsBin;
 	loadCoinImgs(coins, coinsBin);
 	cv::Mat im1, im2, im3, im4;
 	cv::Mat im1Bin, im2Bin, im3Bin, im4Bin;
@@ -112,18 +111,18 @@ int main(void)
 	return 0;
 }
 
-void loadCoinImgs(std::vector<Mat_ptr>& coins_out, std::vector<Mat_ptr>& coinsBin_out)
+void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out)
 {
 	coins_out.reserve(4);
 	coinsBin_out.reserve(4);
-	coins_out.push_back(std::make_unique<cv::Mat>(cv::imread(COIN01_PATH, 1))); //載入1元銅板影像
-	coins_out.push_back(std::make_unique<cv::Mat>(cv::imread(COIN05_PATH, 1))); //載入5元銅板影像
-	coins_out.push_back(std::make_unique<cv::Mat>(cv::imread(COIN10_PATH, 1))); //載入10元銅板影像
-	coins_out.push_back(std::make_unique<cv::Mat>(cv::imread(COIN50_PATH, 1))); //載入50元銅板影像
+	coins_out.push_back(cv::imread(COIN01_PATH, 1)); //載入1元銅板影像
+	coins_out.push_back(cv::imread(COIN05_PATH, 1)); //載入5元銅板影像
+	coins_out.push_back(cv::imread(COIN10_PATH, 1)); //載入10元銅板影像
+	coins_out.push_back(cv::imread(COIN50_PATH, 1)); //載入50元銅板影像
 	cv::Mat tmp;
 	for (size_t i = 0; i < coins_out.size(); i ++){
-		cv::cvtColor(*coins_out[i], *coins_out[i], cv::COLOR_BGR2GRAY); //1元銅板轉換至灰階格式
-		threshold(*coins_out[i], tmp, 10, 255, cv::THRESH_BINARY);  //1元銅板二值化
-		coinsBin_out.push_back(std::make_unique<cv::Mat>(tmp.clone()));
+		cv::cvtColor(coins_out[i], coins_out[i], cv::COLOR_BGR2GRAY); //1元銅板轉換至灰階格式
+		threshold(coins_out[i], tmp, 10, 255, cv::THRESH_BINARY);  //1元銅板二值化
+		coinsBin_out.push_back(tmp.clone());
 	}
 }
