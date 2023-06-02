@@ -18,6 +18,20 @@
             "group": "build",
         },
         {
+            "label": "g++ windows compile timer testing file",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "FinalPresentation\\testing\\timerfunctionalitytest.cpp",
+                "-g",
+                "-I", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\include",
+                "-L", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\x64\\mingw\\bin",
+                "-llibopencv_world470",
+                "-o", "${workspaceFolder}\\bin\\windows64\\${fileBasenameNoExtension}.exe",
+            ],
+            "group": "build",
+        },
+        {
             "label": "g++ linux compile current file",
             "type": "shell",
             "command": "g++",
