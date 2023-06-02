@@ -1,7 +1,6 @@
 /*HW4_Level1: 銅板隨機掉落*/
 # include <opencv2/opencv.hpp>
 # include <random>
-# include <memory>
 // #include "stdafx.h" //如果專案標頭檔裡裡有stdafx.h，原始程式檔有stdafx.cpp，需加入這一行。如果是空專案，則不用加這一行。
 
 #define MOVING_VIDEO_PATH   "data/moving.mp4"  // The path to the video file "moving.mp4"
@@ -13,9 +12,13 @@
 #define COINS               20                 //銅板隨機掉落的總量，必須是整數，數值越低越稀疏
 
 
-struct CoinSpawnInfo;
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out);
-// void render();
+typedef struct
+{
+	uint64_t SpawnFrame;
+	uint8_t  CoinType;
+	uint16_t x;
+} CoinSpawnInfo;
 
 int main(void)
 {
@@ -24,8 +27,6 @@ int main(void)
 	std::vector<cv::Mat> coins;
 	std::vector<cv::Mat> coinsMasks;
 	loadCoinImgs(coins, coinsMasks);
-	cv::Mat im1, im2, im3, im4;
-	cv::Mat im1Bin, im2Bin, im3Bin, im4Bin;
 
 	cv::VideoCapture cap(MOVING_VIDEO_PATH); //讀取背景影片
 	if (!cap.isOpened()) 
@@ -58,7 +59,7 @@ int main(void)
 		cap >> im_bg; //讀取背景影像
 		if (im_bg.empty()) //如果影像不存在
 		{
-			printf(" --(!) No captured im -- Break!");  //顯示錯誤訊息
+			std::cout << " --(!) No captured im -- Break!\n";  //顯示錯誤訊息
 			break;
 		}
 
@@ -81,12 +82,6 @@ int main(void)
 	return 0;
 }
 
-struct CoinSpawnInfo
-{
-	uint64_t SpawnFrame;
-	uint8_t  CoinType;
-	uint16_t x;
-};
 
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out)
 {
