@@ -1,4 +1,10 @@
 #include "../slowmat.hpp"
+#include <iostream>
+
+void fn(my::SlowMat _m)
+{
+    std::cout << _m.cols << std::endl;
+}
 
 int main()
 {
