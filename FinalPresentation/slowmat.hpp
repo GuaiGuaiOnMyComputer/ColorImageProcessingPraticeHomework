@@ -35,11 +35,11 @@ namespace my
         {
             for(int channel = 0; channel < channels; channel++){
                 for(size_t row = 0; row < rows; row++){
-                    for(size_t col = 0; col < cols; col++){
-                        delete[] m_data[channel][row];
-                    }
+                    delete[] m_data[channel][row];
                 }
+                delete[] m_data[channel];
             }
+            delete[] m_data;
         }
 
         public:

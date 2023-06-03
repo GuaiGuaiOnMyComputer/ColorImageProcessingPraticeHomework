@@ -4,7 +4,6 @@
 
 int main()
 {
-    int tmp;
     my::ScopedTimer tmr(10000);
     for (size_t i = 0; i < 10000; i ++){
         tmr.StartTimer();
@@ -12,5 +11,4 @@ int main()
         tmr.EndTimer();
         std::cout << std::setprecision(19) << "Round " << i << " took " << tmr.GetTimerLog(i) << " secs" << std::endl;
     }
-    return tmp;
 }
