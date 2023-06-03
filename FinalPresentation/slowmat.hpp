@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <cstdlib>
 
 namespace my
 {
@@ -16,24 +17,35 @@ namespace my
             for(size_t channel = 0; channel < _channels; channel ++){
                 m_data[channel] = new uint8_t*[_rows];
                 for(size_t row = 0; row < _rows; row ++){
-                  m_data[channel][row] = new uint8_t[cols];  
+                  m_data[channel][row] = new uint8_t[_cols]; 
                 }
             }
         }
-        
+
+        SlowMat(SlowMat&& other) : channels{other.channels}, rows{other.rows}, cols{other.cols}
+        {
+            this->m_data = other.m_data;
+            other.m_data = nullptr;
+            other.channels = 0;
+            other.cols = 0; 
+            other.rows = 0;
+        }
+
         virtual ~SlowMat()
         {
-            for(size_t channel = 0; channel < channels; channel++){
+            for(int channel = 0; channel < channels; channel++){
                 for(size_t row = 0; row < rows; row++){
-                    delete[] m_data[channel][row];
+                    for(size_t col = 0; col < cols; col++){
+                        delete[] m_data[channel][row];
+                    }
                 }
             }
         }
 
         public:
-        const int channels;
-        const size_t rows;
-        const size_t cols;
+        int channels;
+        size_t rows;
+        size_t cols;
 
         private:
         private:
