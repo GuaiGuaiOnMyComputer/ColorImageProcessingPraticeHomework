@@ -33,7 +33,7 @@
             "group": "build",
         },
         {
-            "label": "g++ windows compile any experiment file",
+            "label": "g++ windows compile any experiment file for debug",
             "type": "shell",
             "command": "g++",
             "args": [

@@ -65,7 +65,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "preLaunchTask": "g++ windows compile any performance testing file",
+            "preLaunchTask": "g++ windows compile any experiment file for debug",
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\Program Files\\MinGW\\mingw64\\bin\\gdb.exe",
