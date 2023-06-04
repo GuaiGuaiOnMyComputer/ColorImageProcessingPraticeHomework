@@ -14,7 +14,7 @@ int main()
     my::ScopedTimer slowMatTimer(TEST_COUNT);
     std::mt19937 randGen(time(0));
 
-    for(int shapeIdx; shapeIdx < 4; shapeIdx ++){
+    for(int shapeIdx; shapeIdx < SHAPE_OPT_COUNT; shapeIdx ++){
         for (int i = 0; i < TEST_COUNT; i ++){
 
             cvMatTimer.StartTimer();
