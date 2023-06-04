@@ -45,3 +45,6 @@ bin/
 
 # vscode environment
 # .vscode/
+
+# experiment logs
+*.txt
