@@ -6,6 +6,9 @@ namespace my
     class SlowMat
     {
         public:
+
+        // creates a SlowMat object whose pixel values are initialized to 0
+        // returned as a shared pointer to object
         static std::shared_ptr<SlowMat> zeros(size_t _rows, size_t _cols, int _channels)
         {
             std::shared_ptr<SlowMat> tmp = std::make_shared<SlowMat>(_rows, _cols, _channels);
@@ -17,6 +20,7 @@ namespace my
             return tmp;
         }
 
+        // regular constructor, heap-allocates memory to store pixel values
         explicit SlowMat(size_t _rows, size_t _cols, int _channels) : rows{_rows}, cols{_cols}, channels{_channels}
         {
             m_data = new uint8_t**[_channels];
@@ -28,6 +32,7 @@ namespace my
             }
         }
 
+        // move constructor(not used)
         SlowMat(SlowMat&& other) : channels{other.channels}, rows{other.rows}, cols{other.cols}
         {
             this->m_data = other.m_data;
@@ -37,6 +42,7 @@ namespace my
             other.rows = 0;
         }
 
+        // copy constructor
         SlowMat(const SlowMat& other) : channels{other.channels}, rows{other.rows}, cols{other.cols}
         {
             this->m_data = new uint8_t**[channels];
@@ -49,7 +55,7 @@ namespace my
             }
         }
 
-
+        // move assignment operator
         SlowMat& operator=(SlowMat&& other) noexcept
         {
             if(this == &other)
