@@ -1,6 +1,7 @@
 #include <array>
 #include <chrono>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include "experiment/imageshapes.hpp"
@@ -32,7 +33,11 @@ namespace my
                 std::cout << "File creation failed, check file path: " << fullpath << std::endl;
                 return;
             }
-            logFile.write((char*)m_TimerLog.data(), m_TimerLog.size() * sizeof(double));
+            // logFile.write((char*)m_TimerLog.data(), m_TimerLog.size() * sizeof(double));
+            for(auto itr = m_TimerLog.begin(); itr != m_TimerLog.end() - 1; itr ++){
+                logFile << std::fixed << std::setprecision(10) << *itr << ',';
+            }
+            logFile << std::fixed << std::setprecision(10) << *(m_TimerLog.end() - 1);
             logFile.flush();
             logFile.close();
             std::cout << "File ' " << fullpath << " ' has been saved." << std::endl;
