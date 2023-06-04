@@ -77,6 +77,10 @@ namespace my
             m_DeleteData();
         }
 
+        void inline AlterAnElement(size_t index, uint8_t val){
+            m_data[index % channels][index % rows][index % cols] = val % channels;
+        }
+
         public:
         int channels;
         size_t rows;
