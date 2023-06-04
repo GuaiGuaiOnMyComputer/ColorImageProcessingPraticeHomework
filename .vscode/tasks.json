@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "HW3\\HW3_B10831020.cpp",
+                "HW4\\Level1\\HW4_level1_guide.cpp",
                 "-g",
                 "-I", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\include",
                 "-L", "C:\\Program Files\\OpenCV\\MinGW\\install\\opencv\\x64\\mingw\\bin",
@@ -22,7 +22,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "HW3/HW3_B10831020.cpp",
+                "HW4/Level1/HW4_level1_guide.cpp",
                 "-g",
                 "-v",
                 "-I", "/usr/local/include/opencv4",
