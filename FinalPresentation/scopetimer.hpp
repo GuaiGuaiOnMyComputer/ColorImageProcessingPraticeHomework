@@ -1,8 +1,9 @@
-#include <vector>
+#include <array>
 #include <chrono>
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "experiment/imageshapes.hpp"
 
 namespace my
 {
@@ -11,7 +12,6 @@ namespace my
     public:
         ScopedTimer(uint32_t testCount)
         {
-            m_TimerLog.reserve(testCount);
         }
 
         void StartTimer()
@@ -19,10 +19,10 @@ namespace my
             m_start = std::chrono::high_resolution_clock::now();
         }
             
-        void EndTimer()
+        void EndTimer(size_t testIdx)
         {
             m_end = std::chrono::high_resolution_clock::now();
-            m_TimerLog.push_back(std::chrono::duration_cast<std::chrono::duration<double>>(m_end - m_start).count());
+            m_TimerLog[testIdx] = std::chrono::duration_cast<std::chrono::duration<double>>(m_end - m_start).count();
         }
 
         void ExportToTxt(const std::string fullpath)
@@ -38,13 +38,18 @@ namespace my
             std::cout << "File ' " << fullpath << " ' has been saved." << std::endl;
         }
 
+        void Reset()
+        {
+            memset(m_TimerLog.begin(), 0, sizeof(double) * TEST_COUNT);
+        }
+
         const double GetTimerLog(size_t testNo){
             return m_TimerLog[testNo];
         }
 
 
     private:
-        std::vector<double> m_TimerLog;
+        std::array<double, TEST_COUNT> m_TimerLog;
         std::chrono::high_resolution_clock::time_point m_start;
         std::chrono::high_resolution_clock::time_point m_end;
     };
