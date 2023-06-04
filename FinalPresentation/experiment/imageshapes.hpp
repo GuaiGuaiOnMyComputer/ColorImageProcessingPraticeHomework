@@ -1,4 +1,6 @@
-#ifdef _DEBUG
+#pragma once
+
+#ifndef _DEBUG
 #define TEST_COUNT 5000
 #else
 #define TEST_COUNT 20
