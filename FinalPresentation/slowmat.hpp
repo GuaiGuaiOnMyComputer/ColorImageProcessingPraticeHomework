@@ -82,6 +82,11 @@ namespace my
             }
         }
 
+        uint8_t* operator[] (int _channel)
+        {
+            return *m_data[_channel];
+        }
+
         // move assignment operator
         SlowMat& operator=(SlowMat&& other) noexcept
         {
