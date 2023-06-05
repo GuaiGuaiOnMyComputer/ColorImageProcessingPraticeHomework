@@ -72,6 +72,12 @@ namespace my
         // copy constructor
         SlowMat(const SlowMat& other) : channels{other.channels}, rows{other.rows}, cols{other.cols}
         {
+            #ifdef FALSE_COPY
+
+            #elif DOUBLE_DELETE
+            this->m_data = other.m_data;
+
+            #else
             this->m_data = new uint8_t**[channels];
             for(size_t channel = 0; channel < channels; channel ++){
                 this->m_data[channel] = new uint8_t*[rows];
@@ -80,6 +86,7 @@ namespace my
                     memcpy(m_data[channel][row], other.m_data[channel][row], sizeof(uint8_t) * cols); 
                 }
             }
+            #endif
         }
 
         void Convolution(const int32_t _kernal[])
