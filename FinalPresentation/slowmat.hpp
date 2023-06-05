@@ -106,7 +106,7 @@ namespace my
 
         void Add(const SlowMat& other)
         {
-            for (int channel = 0; channel < this->channels, channel ++){
+            for (int channel = 0; channel < this->channels; channel++){
                 for (int row = 0; row < this->rows; row ++){
                     for (int col = 0; col < this->cols; col++){
                         this->m_data[channel][row][col] += other.m_data[channel][row][col];
@@ -117,7 +117,7 @@ namespace my
 
         void Minus(const SlowMat& other)
         {
-            for (int channel = 0; channel < this->channels, channel ++){
+            for (int channel = 0; channel < this->channels; channel++){
                 for (int row = 0; row < this->rows; row ++){
                     for (int col = 0; col < this->cols; col++){
                         this->m_data[channel][row][col] -= other.m_data[channel][row][col];
@@ -128,13 +128,18 @@ namespace my
 
         void ElementMul(const SlowMat& other)
         {
-            for (int channel = 0; channel < this->channels, channel ++){
+            for (int channel = 0; channel < this->channels; channel++){
                 for (int row = 0; row < this->rows; row ++){
                     for (int col = 0; col < this->cols; col++){
                         this->m_data[channel][row][col] *= other.m_data[channel][row][col];
                     }
                 }
             }
+        }
+
+        uint8_t** operator[](int channel)
+        {
+            return m_data[channel];
         }
 
         // move assignment operator
