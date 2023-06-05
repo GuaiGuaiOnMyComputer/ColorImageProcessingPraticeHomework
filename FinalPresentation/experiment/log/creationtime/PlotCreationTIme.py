@@ -9,9 +9,9 @@ IMG_SHAPES = ((800, 600),
               (1024, 768), 
               (1280, 1024), 
               (1920, 1080),
-              (10000, 10000),
-              (15000, 15000), 
-              (20000, 20000))
+              (2000, 2500),
+              (4000, 3000),
+              (5000, 3500))
 
 def load_txt_stats() -> np.ndarray:
     stats = np.zeros((TEST_SIZE, 7, 2), dtype = np.double)
@@ -70,13 +70,16 @@ def get_avg_time(stats):
 
 
 def plot_curve(data):
-    plt.plot(data[:, 0], label = "my::Mat")
-    plt.plot(data[:, 1], label = "cv::Mat")
+    plt.plot(data[:, 0], label = "my::Mat", marker = "o")
+    plt.plot(data[:, 1], label = "cv::Mat", marker = "p")
     plt.legend()
     plt.xticks([_ for _ in range(len(IMG_SHAPES))], IMG_SHAPES)
     plt.xlabel("Image Shapes")
     y_tick_loc = plt.gca().get_yticks()
+    plt.ylim((0, y_tick_loc.max() + 0.0002))
+    y_tick_loc = plt.gca().get_yticks()
     plt.yticks(y_tick_loc, np.linspace(0, 0.2, len(y_tick_loc)))
+    plt.gca().yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
     plt.ylabel("Creation Time (ms)")
     plt.title("Mat Creation Time of 7 Image Shapes")
     plt.show()
