@@ -4,7 +4,8 @@ namespace my
 {
     class LapFilter
     {
-        const uint8_t LAP_FILTER[25] = {
+        public:
+        const int32_t LAP_FILTER[25] = {
             0 ,  0, -1,  0, 0,
             0 , -1, -2, -1, 0,
             -1, -2, 16, -2, -1,
