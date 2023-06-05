@@ -15,7 +15,7 @@ IMG_SHAPES = ((800, 600),
 
 def load_txt_stats() -> np.ndarray:
     stats = np.zeros((TEST_SIZE, 7, 2), dtype = np.double)
-    for (root, dirs, files) in walk(dirname(__file__)):
+    for (root, dirs, files) in walk(join("FinalPersentation", "experiment", "log", "creationtime")):
         for file_name in files:
             test_type = -1
             mat_type = -1
