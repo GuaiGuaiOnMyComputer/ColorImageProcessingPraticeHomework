@@ -104,6 +104,38 @@ namespace my
             }
         }
 
+        void Add(const SlowMat& other)
+        {
+            for (int channel = 0; channel < this->channels, channel ++){
+                for (int row = 0; row < this->rows; row ++){
+                    for (int col = 0; col < this->cols; col++){
+                        this->m_data[channel][row][col] += other.m_data[channel][row][col];
+                    }
+                }
+            }
+        }
+
+        void Minus(const SlowMat& other)
+        {
+            for (int channel = 0; channel < this->channels, channel ++){
+                for (int row = 0; row < this->rows; row ++){
+                    for (int col = 0; col < this->cols; col++){
+                        this->m_data[channel][row][col] -= other.m_data[channel][row][col];
+                    }
+                }
+            }
+        }
+
+        void ElementMul(const SlowMat& other)
+        {
+            for (int channel = 0; channel < this->channels, channel ++){
+                for (int row = 0; row < this->rows; row ++){
+                    for (int col = 0; col < this->cols; col++){
+                        this->m_data[channel][row][col] *= other.m_data[channel][row][col];
+                    }
+                }
+            }
+        }
 
         // move assignment operator
         SlowMat& operator=(SlowMat&& other) noexcept
