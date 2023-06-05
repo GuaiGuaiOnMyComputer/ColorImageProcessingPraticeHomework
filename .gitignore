@@ -48,3 +48,4 @@ bin/
 
 # experiment logs
 *.txt
+*.npy
