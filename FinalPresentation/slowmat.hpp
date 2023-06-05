@@ -1,6 +1,7 @@
 #include <stdint.h> // uint8_t
 #include <memory>   // std::shared_ptr
 #include <memory.h> // memset()
+#include <opencv2/imgcodecs.hpp>
 namespace my
 {
     class SlowMat
@@ -15,6 +16,32 @@ namespace my
             for(int channel = 0; channel < tmp->channels; channel ++){
                 for(size_t row = 0; row < tmp->rows; row ++){
                     memset(tmp->m_data[channel][row], 0, sizeof(uint8_t) * tmp->cols);
+                }
+            }
+            return tmp;
+        }
+
+        static std::shared_ptr<SlowMat> FromCvMat(const cv::Mat& _original)
+        {
+            auto tmp = std::make_shared<my::SlowMat>(_original.rows, _original.cols, _original.channels());
+            for (int channel = 0; channel < tmp->channels; channel++){
+                for (size_t row = 0; row < tmp->rows; row ++){
+                    for (size_t col = 0; col < tmp->cols; col ++){
+                        tmp->m_data[channel][row][col] = _original.ptr()[channel * _original.rows * _original.cols + row * _original.cols + col];
+                    }
+                }
+            }
+            return tmp;
+        }
+
+        cv::Mat ToCvMat() const
+        {
+            cv::Mat tmp = cv::Mat::zeros(rows, cols, CV_8UC3);
+            for (int channel = 0; channel < tmp.channels(); channel++){
+                for (size_t row = 0; row < tmp.rows; row ++){
+                    for (size_t col = 0; col < tmp.cols; col ++){
+                        tmp.ptr()[channel * tmp.rows * tmp.cols + row * tmp.cols + col] = m_data[channel][row][col];
+                    }
                 }
             }
             return tmp;
