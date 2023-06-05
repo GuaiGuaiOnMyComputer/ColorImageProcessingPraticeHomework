@@ -82,6 +82,28 @@ namespace my
             }
         }
 
+        void Convolution(const int32_t _kernal[])
+        {
+            constexpr int KER_SIZE = 5;
+            SlowMat original = SlowMat(*this);
+            const int halfKerLen = (KER_SIZE - 1) / 2;
+            const int convHozStart = (KER_SIZE - 1) / 2;
+            const int convVrtStart = (KER_SIZE - 1) / 2;
+            const int convHozEnd = cols - (KER_SIZE - 1) / 2 - 1;
+            const int convVrtEnd = rows - (KER_SIZE - 1) / 2 - 1;
+            for (int channel = 0; channel < channels; channel ++){
+                for (int row = convVrtStart; row < convVrtEnd; row ++){
+                    for (int col = convHozStart; col < convHozEnd; col ++){
+                        for (int i = 0; i < KER_SIZE; i ++){
+                            for (int j = 0; j < KER_SIZE; j++){
+                                m_data[channel][row][col] += original.m_data[channel][row - halfKerLen + i][col - halfKerLen + j] * _kernal[j + KER_SIZE * i];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         uint8_t* operator[] (int _channel)
         {
             return *m_data[_channel];
