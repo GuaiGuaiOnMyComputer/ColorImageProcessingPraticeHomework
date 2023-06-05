@@ -1,7 +1,7 @@
-/*HW4_Level1: »ÉªOÀH¾÷±¼¸¨*/
+/*HW4_Level1: ï¿½ÉªOï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 # include <opencv2/opencv.hpp>
 # include <random>
-// #include "stdafx.h" //¦pªG±M®×¼ÐÀYÀÉ¸Ì¸Ì¦³stdafx.h¡A­ì©lµ{¦¡ÀÉ¦³stdafx.cpp¡A»Ý¥[¤J³o¤@¦æ¡C¦pªG¬OªÅ±M®×¡A«h¤£¥Î¥[³o¤@¦æ¡C
+// #include "stdafx.h" //ï¿½pï¿½Gï¿½Mï¿½×¼ï¿½ï¿½Yï¿½É¸Ì¸Ì¦ï¿½stdafx.hï¿½Aï¿½ï¿½lï¿½{ï¿½ï¿½ï¿½É¦ï¿½stdafx.cppï¿½Aï¿½Ý¥[ï¿½Jï¿½oï¿½@ï¿½ï¿½Cï¿½pï¿½Gï¿½Oï¿½Å±Mï¿½×¡Aï¿½hï¿½ï¿½ï¿½Î¥[ï¿½oï¿½@ï¿½ï¿½C
 
 #define MOVING_VIDEO_PATH   "data/moving.mp4"  // The path to the video file "moving.mp4"
 #define DROP_VIDEO_PATH     "data/drop.mp4"    // The path to the video file "drop.mp4"
@@ -9,92 +9,93 @@
 #define COIN05_PATH         "data/c05.png"     // The path to the coin
 #define COIN10_PATH         "data/c10.png"     // The path to the coin
 #define COIN50_PATH         "data/c50.png"     // The path to the coin
-#define COINS               20                 //»ÉªOÀH¾÷±¼¸¨ªºÁ`¶q¡A¥²¶·¬O¾ã¼Æ¡A¼Æ­È¶V§C¶Vµ}²¨
+#define COINS               20                 //ï¿½ÉªOï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½qï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½Æ¡Aï¿½Æ­È¶Vï¿½Cï¿½Vï¿½}ï¿½ï¿½
 
 
+struct CoinSpawnInfo;
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out);
-typedef struct
-{
-	uint64_t SpawnFrame;
-	uint8_t  CoinType;
-	uint16_t x;
-} CoinSpawnInfo;
 
 int main(void)
 {
-	/*ÅÜ¼Æ(¼v¹³®e¾¹)«Å§i*/
+	/*ï¿½Ü¼ï¿½(ï¿½vï¿½ï¿½ï¿½eï¿½ï¿½)ï¿½Å§i*/
 	auto rng = std::mt19937(time(0));
 	std::vector<cv::Mat> coins;
 	std::vector<cv::Mat> coinsMasks;
 	loadCoinImgs(coins, coinsMasks);
 
-	cv::VideoCapture cap(MOVING_VIDEO_PATH); //Åª¨ú­I´º¼v¤ù
+	cv::VideoCapture cap(MOVING_VIDEO_PATH); //Åªï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½vï¿½ï¿½
 	if (!cap.isOpened()) 
 		return 0;
 
-	cv::Size frameSize(cap.get(cv::CAP_PROP_FRAME_WIDTH), cap.get(cv::CAP_PROP_FRAME_HEIGHT)); //Åª¨úµø°T¼e/°ª
-	const int FRAME_COUNT = cap.get(cv::CAP_PROP_FRAME_COUNT); //Åª¨úµø°Tµe­±Á`¼Æ
+	cv::Size frameSize(cap.get(cv::CAP_PROP_FRAME_WIDTH), cap.get(cv::CAP_PROP_FRAME_HEIGHT)); //Åªï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½e/ï¿½ï¿½
+	const int FRAME_COUNT = cap.get(cv::CAP_PROP_FRAME_COUNT); //Åªï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½eï¿½ï¿½ï¿½`ï¿½ï¿½
 
-	cv::VideoWriter dropVid(DROP_VIDEO_PATH, cv::VideoWriter::fourcc('X', '2', '6', '4'), 60, frameSize); //«Ø¥ß»ÉªOÀH¾÷±¼¸¨ªºµø°Tª«¥ó
+	cv::VideoWriter dropVid(DROP_VIDEO_PATH, cv::VideoWriter::fourcc('X', '2', '6', '4'), 60, frameSize); //ï¿½Ø¥ß»ÉªOï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½
 
 	if (!dropVid.isOpened())
 	{
 		std::cout << "File could not be created for writing." << std::endl;
 		return -1;
 	}
-	cv::namedWindow("Video"); //«Ø¥ßµø°Tµøµ¡
+	cv::namedWindow("Video"); //ï¿½Ø¥ßµï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½
 
-	CoinSpawnInfo coinSpawnInfo[COINS]; //¨C­Ó»ÉªOªº±¼¸¨°_©lµe­±½s¸¹¡BºØÃþ¡B¤ô¥­¦ì¸m
+	CoinSpawnInfo coinSpawnInfo[COINS]; //ï¿½Cï¿½Ó»ÉªOï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½lï¿½eï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½Bï¿½ï¿½ï¿½ï¿½ï¿½ï¿½m
 	for (int i = 0; i < COINS; i++)
 	{
-		coinSpawnInfo[i].SpawnFrame = rng() % (FRAME_COUNT - 100);     // »ÉªOiªº°_©lµe­±½s¸¹(ÀH¾÷)
-		coinSpawnInfo[i].CoinType   = rng() % 5;                       // »ÉªOiªººØÃþ(ÀH¾÷)
-		coinSpawnInfo[i].x   = rng() % (frameSize.width - 150); // »ÉªOiªº¤ô¥­¤è¦V¦ì¸m(ÀH¾÷)
+		coinSpawnInfo[i].SpawnFrame = rng() % (FRAME_COUNT - 100);     // ï¿½ÉªOiï¿½ï¿½ï¿½_ï¿½lï¿½eï¿½ï¿½ï¿½sï¿½ï¿½(ï¿½Hï¿½ï¿½)
+		coinSpawnInfo[i].CoinType   = rng() % 5;                       // ï¿½ÉªOiï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Hï¿½ï¿½)
+		coinSpawnInfo[i].x   = rng() % (frameSize.width - 150); // ï¿½ÉªOiï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Vï¿½ï¿½m(ï¿½Hï¿½ï¿½)
 	}
 
-	//¥Îfor°j°éÅª¨ú¨C¤@µe®æ
+	//ï¿½ï¿½forï¿½jï¿½ï¿½Åªï¿½ï¿½ï¿½Cï¿½@ï¿½eï¿½ï¿½
 	for (int frameIdx = 0; frameIdx < FRAME_COUNT; frameIdx++)
 	{
 		cv::Mat im_bg;
-		cap >> im_bg; //Åª¨ú­I´º¼v¹³
-		if (im_bg.empty()) //¦pªG¼v¹³¤£¦s¦b
+		cap >> im_bg; //Åªï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½vï¿½ï¿½
+		if (im_bg.empty()) //ï¿½pï¿½Gï¿½vï¿½ï¿½ï¿½ï¿½ï¿½sï¿½b
 		{
-			std::cout << " --(!) No captured im -- Break!\n";  //Åã¥Ü¿ù»~°T®§
+			std::cout << " --(!) No captured im -- Break!\n";  //ï¿½ï¿½Ü¿ï¿½ï¿½~ï¿½Tï¿½ï¿½
 			break;
 		}
 
-		//±N²Äi ­Ó»ÉªO±¼¸¨¼v¹³¥[¤J­I´º¼v¹³ªº°j°é
+		//ï¿½Nï¿½ï¿½i ï¿½Ó»ÉªOï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½[ï¿½Jï¿½Iï¿½ï¿½ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½
 		for (int i = 0; i < COINS; i++)
 		{
-			int y = 5 * (frameIdx - coinSpawnInfo[i].SpawnFrame); //»ÉªOi¯x§Î®Øªºy®y¼Ð(¯x§Î®Ø¤W½tªº««ª½¤è¦V®y¼Ð)
-			if (y > 0 && y < frameSize.height - 150) //¦pªG»ÉªOi¯x§Î®Ø(««ª½¤è¦V)¦bµe­±½d³ò¤º¡A°õ¦æ¤U¦C°Ê§@
+			int y = 5 * (frameIdx - coinSpawnInfo[i].SpawnFrame); //ï¿½ÉªOiï¿½xï¿½Î®Øªï¿½yï¿½yï¿½ï¿½(ï¿½xï¿½Î®Ø¤Wï¿½tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Vï¿½yï¿½ï¿½)
+			if (y > 0 && y < frameSize.height - 150) //ï¿½pï¿½Gï¿½ÉªOiï¿½xï¿½Î®ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½V)ï¿½bï¿½eï¿½ï¿½ï¿½dï¿½ò¤º¡Aï¿½ï¿½ï¿½ï¿½Uï¿½Cï¿½Ê§@
 			{
 				cv::Mat coinRoi = im_bg(cv::Rect(coinSpawnInfo[i].x, y, coins[i].cols, coins[i].rows));
 				coins[coinSpawnInfo[i].CoinType].copyTo(coinRoi, coinsMasks[coinSpawnInfo[i].CoinType]);
 			}
 		}
 
-		cv::imshow("Video", im_bg); //Åã¥ÜÅ|¤W»ÉªO«áªº­I´º¼v¹³
-		cv::waitKey(10); //µ¥«Ý10²@¬í
-		dropVid << im_bg; //¶×¥X¼v¹³¨ì­n¿é¥Xªºµø°TÀÉ
+		cv::imshow("Video", im_bg); //ï¿½ï¿½ï¿½ï¿½|ï¿½Wï¿½ÉªOï¿½áªºï¿½Iï¿½ï¿½ï¿½vï¿½ï¿½
+		cv::waitKey(10); //ï¿½ï¿½ï¿½ï¿½10ï¿½@ï¿½ï¿½
+		dropVid << im_bg; //ï¿½×¥Xï¿½vï¿½ï¿½ï¿½ï¿½nï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½Tï¿½ï¿½
 	}
-	std::cout << "please check: data/drop.mp4" << std::endl; //Åã¥Ü¿é¥Xµø°Tªº¸ô®|/ÀÉ¦W
+	std::cout << "please check: data/drop.mp4" << std::endl; //ï¿½ï¿½Ü¿ï¿½Xï¿½ï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½|/ï¿½É¦W
 	return 0;
 }
 
+struct CoinSpawnInfo
+{
+	uint64_t SpawnFrame;
+	uint8_t  CoinType;
+	uint16_t x;
+};
 
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out)
 {
 	coins_out.reserve(4);
 	coinsBin_out.reserve(4);
-	coins_out.push_back(cv::imread(COIN01_PATH, 1)); //¸ü¤J1¤¸»ÉªO¼v¹³
-	coins_out.push_back(cv::imread(COIN05_PATH, 1)); //¸ü¤J5¤¸»ÉªO¼v¹³
-	coins_out.push_back(cv::imread(COIN10_PATH, 1)); //¸ü¤J10¤¸»ÉªO¼v¹³
-	coins_out.push_back(cv::imread(COIN50_PATH, 1)); //¸ü¤J50¤¸»ÉªO¼v¹³
+	coins_out.push_back(cv::imread(COIN01_PATH, 1)); //ï¿½ï¿½ï¿½J1ï¿½ï¿½ï¿½ÉªOï¿½vï¿½ï¿½
+	coins_out.push_back(cv::imread(COIN05_PATH, 1)); //ï¿½ï¿½ï¿½J5ï¿½ï¿½ï¿½ÉªOï¿½vï¿½ï¿½
+	coins_out.push_back(cv::imread(COIN10_PATH, 1)); //ï¿½ï¿½ï¿½J10ï¿½ï¿½ï¿½ÉªOï¿½vï¿½ï¿½
+	coins_out.push_back(cv::imread(COIN50_PATH, 1)); //ï¿½ï¿½ï¿½J50ï¿½ï¿½ï¿½ÉªOï¿½vï¿½ï¿½
 	cv::Mat tmp;
 	for (size_t i = 0; i < coins_out.size(); i ++){
-		cv::cvtColor(coins_out[i], coins_out[i], cv::COLOR_BGR2GRAY); //1¤¸»ÉªOÂà´«¦Ü¦Ç¶¥®æ¦¡
-		threshold(coins_out[i], tmp, 10, 255, cv::THRESH_BINARY);  //1¤¸»ÉªO¤G­È¤Æ
+		cv::cvtColor(coins_out[i], coins_out[i], cv::COLOR_BGR2GRAY); //1ï¿½ï¿½ï¿½ÉªOï¿½à´«ï¿½Ü¦Ç¶ï¿½ï¿½æ¦¡
+		threshold(coins_out[i], tmp, 10, 255, cv::THRESH_BINARY);  //1ï¿½ï¿½ï¿½ÉªOï¿½Gï¿½È¤ï¿½
 		coinsBin_out.push_back(tmp.clone());
 	}
 }
