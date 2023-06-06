@@ -43,8 +43,9 @@ bin/
 # matlab cache
 *.asv
 
-# vscode environment
-# .vscode/
+
+# presentation files
+*.pptx
 
 # experiment logs
 *.txt
