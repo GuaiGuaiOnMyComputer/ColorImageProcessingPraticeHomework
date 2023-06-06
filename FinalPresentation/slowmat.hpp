@@ -48,13 +48,15 @@ namespace my
         }
 
         // regular constructor, heap-allocates memory to store pixel values
+        // use of new operator can easily lead to memory leak
+        // heap allocation is bad for performance, calling new operator for many times is discouraged
         explicit SlowMat(size_t _rows, size_t _cols, int _channels) : rows{_rows}, cols{_cols}, channels{_channels}
         {
-            m_data = new uint8_t**[_channels];
+            m_data = new uint8_t**[_channels]; // allocate an array of uint8_t** channel pointers for an image
             for(size_t channel = 0; channel < _channels; channel ++){
-                m_data[channel] = new uint8_t*[_rows];
+                m_data[channel] = new uint8_t*[_rows]; // allocate an array of uint8_t* row pointers for each channel
                 for(size_t row = 0; row < _rows; row ++){
-                  m_data[channel][row] = new uint8_t[_cols]; 
+                  m_data[channel][row] = new uint8_t[_cols]; // allocate an array of uint8_t for each row
                 }
             }
         }
@@ -144,6 +146,7 @@ namespace my
             }
         }
 
+        // custom indexing operator
         uint8_t** operator[](int channel)
         {
             return m_data[channel];
