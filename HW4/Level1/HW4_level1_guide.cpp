@@ -86,9 +86,9 @@ void loadCoinImgs(std::vector<cv::Mat>& _coins_out, std::vector<cv::Mat>& _coins
 	_coins_out.push_back(cv::imread(COIN10_PATH, 1)); 
 	_coins_out.push_back(cv::imread(COIN50_PATH, 1)); 
 	cv::Mat tmp;
-	for (size_t i = 0; i < _coins_out.size(); i ++){
-		cv::cvtColor(_coins_out[i], _coins_out[i], cv::COLOR_BGR2GRAY);
-		threshold(_coins_out[i], tmp, 10, 255, cv::THRESH_BINARY);
+	for (cv::Mat aCoinImg : _coins_out){
+		cv::cvtColor(aCoinImg, tmp, cv::COLOR_BGR2GRAY);
+		threshold(tmp, tmp, 10, 255, cv::THRESH_BINARY);
 		_coinsBin_out.push_back(tmp.clone());
 	}
 }
