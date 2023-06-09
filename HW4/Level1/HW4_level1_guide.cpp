@@ -20,9 +20,9 @@ struct CoinSpawnInfo
 	uint16_t x;
 };
 
-void loadCoinImgs(std::vector<cv::Mat>& _coins_out, std::vector<cv::Mat>& _coinsBin_out);
-void determineCoinSpawn(std::array<CoinSpawnInfo, COINS_COUNT>& _coinSpawnInfo, const int _FRAME_COUNT, const int _FRAME_WIDTH);
-inline void spawnCoinsOnFrame(std::array<CoinSpawnInfo, COINS_COUNT> &_coinSpawnInfo, std::vector<cv::Mat> &_coins, std::vector<cv::Mat> &_coinsMasks, cv::Mat& _imBg_out, size_t _frameIdx, size_t _frameHeight);
+void loadCoinImgs(std::vector<cv::Mat>&, std::vector<cv::Mat>&);
+void determineCoinSpawn(std::array<CoinSpawnInfo, COINS_COUNT>&, const int, const int);
+inline void spawnCoinsOnFrame(cv::Mat&, const std::array<CoinSpawnInfo, COINS_COUNT> &, const std::vector<cv::Mat> &, const std::vector<cv::Mat> &,  const size_t, const size_t);
 
 int main(void)
 {
@@ -51,11 +51,6 @@ int main(void)
 	std::array<CoinSpawnInfo, COINS_COUNT> coinSpawnInfo;
 	determineCoinSpawn(coinSpawnInfo, FRAME_COUNT, frameSize.width);
 
-#if _DEBUG
-	cv::namedWindow("ROI with coin");
-	cv::namedWindow("ROI bg");
-#endif
-
 	for (int frameIdx = 0; frameIdx < FRAME_COUNT; frameIdx++)
 	{
 		cv::Mat im_bg;
@@ -66,7 +61,7 @@ int main(void)
 			break;
 		}
 
-		spawnCoinsOnFrame(coinSpawnInfo, coins, coinsMasks, im_bg, frameIdx, frameSize.height);
+		spawnCoinsOnFrame(im_bg, coinSpawnInfo, coins, coinsMasks, frameIdx, frameSize.height);
 
 		cv::imshow("Video", im_bg);
 		cv::waitKey(10); 
@@ -112,26 +107,20 @@ void determineCoinSpawn(std::array<CoinSpawnInfo, COINS_COUNT>& _coinSpawnInfo, 
 }
 
 inline void spawnCoinsOnFrame(
-	std::array<CoinSpawnInfo, COINS_COUNT>& _coinSpawnInfo, 
-	std::vector<cv::Mat>& _coins,
-	std::vector<cv::Mat>& _coinsMasks,
 	cv::Mat& _imBg_out, 
-	size_t _frameIdx, 
-	size_t _frameHeight)
+	const std::array<CoinSpawnInfo, COINS_COUNT>& _coinSpawnInfo, 
+	const std::vector<cv::Mat>& _coins,
+	const std::vector<cv::Mat>& _coinsMasks,
+	const size_t _frameIdx, 
+	const size_t _frameHeight)
 {
-	for (CoinSpawnInfo& aCoinInfo : _coinSpawnInfo)
+	for (const CoinSpawnInfo& aCoinInfo : _coinSpawnInfo)
 	{
 		int y = 5 * (_frameIdx - aCoinInfo.SpawnFrame);
 		if (y > 0 && y < _frameHeight - 150)
 		{
 			cv::Mat coinRoi = cv::Mat(_imBg_out, cv::Rect(aCoinInfo.x, y, _coins[aCoinInfo.CoinType].cols, _coins[aCoinInfo.CoinType].rows));
-#if _DEBUG
-			cv::imshow("ROI bg", coinRoi);
-#endif
 			_coins[aCoinInfo.CoinType].copyTo(coinRoi, _coinsMasks[aCoinInfo.CoinType]);
-#if _DEBUG
-			cv::imshow("ROI With coin", coinRoi);
-#endif
 		}
 	}
 }
