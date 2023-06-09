@@ -13,7 +13,7 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\HW4",
             "environment": [],
-            "preLaunchTask": "g++ windows compile timer testing file",
+            "preLaunchTask": "g++ windows compile current file",
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\Program Files\\MinGW\\mingw64\\bin\\gdb.exe",
