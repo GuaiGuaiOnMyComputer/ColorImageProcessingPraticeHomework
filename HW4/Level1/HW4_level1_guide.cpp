@@ -11,7 +11,12 @@
 #define COINS               20                 
 
 
-struct CoinSpawnInfo;
+struct CoinSpawnInfo
+{
+	uint64_t SpawnFrame;
+	uint8_t  CoinType;
+	uint16_t x;
+};
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out);
 
 int main(void)
@@ -22,8 +27,11 @@ int main(void)
 	loadCoinImgs(coins, coinsMasks);
 
 	cv::VideoCapture cap(MOVING_VIDEO_PATH);
-	if (!cap.isOpened()) 
-		return 0;
+	if (!cap.isOpened()){
+		std::cout << "Cannot open video, check path:" << MOVING_VIDEO_PATH << std::endl;
+		return -1;
+	}
+		
 
 	cv::Size frameSize(cap.get(cv::CAP_PROP_FRAME_WIDTH), cap.get(cv::CAP_PROP_FRAME_HEIGHT));
 	const int FRAME_COUNT = cap.get(cv::CAP_PROP_FRAME_COUNT);
@@ -73,12 +81,6 @@ int main(void)
 	return 0;
 }
 
-struct CoinSpawnInfo
-{
-	uint64_t SpawnFrame;
-	uint8_t  CoinType;
-	uint16_t x;
-};
 
 void loadCoinImgs(std::vector<cv::Mat>& coins_out, std::vector<cv::Mat>& coinsBin_out)
 {
