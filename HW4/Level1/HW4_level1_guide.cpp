@@ -2,7 +2,6 @@
 # include <random>
 # include <array>
 # include <algorithm>
-// #include "stdafx.h" //�p�G�M�׼��Y�ɸ̸̦�stdafx.h�A��l�{���ɦ�stdafx.cpp�A�ݥ[�J�o�@��C�p�G�O�űM�סA�h���Υ[�o�@��C
 
 #define MOVING_VIDEO_PATH   "data/moving.mp4"  // The path to the video file "moving.mp4"
 #define DROP_VIDEO_PATH     "data/drop.mp4"    // The path to the video file "drop.mp4"
@@ -10,7 +9,7 @@
 #define COIN05_PATH         "data/c05.png"     // The path to the coin
 #define COIN10_PATH         "data/c10.png"     // The path to the coin
 #define COIN50_PATH         "data/c50.png"     // The path to the coin
-#define COINS_COUNT         20                 
+#define COINS_COUNT         50
 
 struct CoinSpawnInfo
 {
@@ -21,7 +20,7 @@ struct CoinSpawnInfo
 
 void loadCoinImgs(std::vector<cv::Mat>&, std::vector<cv::Mat>&);
 void determineCoinSpawn(std::array<CoinSpawnInfo, COINS_COUNT>&, const int, const int);
-inline void spawnCoinsOnFrame(cv::Mat&, const std::array<CoinSpawnInfo, COINS_COUNT> &, const std::vector<cv::Mat> &, const std::vector<cv::Mat> &,  const size_t, const size_t);
+inline void spawnCoinsOnFrame(cv::Mat&, const std::array<CoinSpawnInfo, COINS_COUNT> &, const std::vector<cv::Mat> &, const std::vector<cv::Mat> &,  const size_t&, const size_t&);
 
 int main(void)
 {
@@ -32,7 +31,7 @@ int main(void)
 
 	cv::VideoCapture cap(MOVING_VIDEO_PATH);
 	cv::Size frameSize = cv::Size(cap.get(cv::CAP_PROP_FRAME_WIDTH), cap.get(cv::CAP_PROP_FRAME_HEIGHT));
-	cv::VideoWriter dropVid(DROP_VIDEO_PATH, cv::VideoWriter::fourcc('X', '2', '6', '4'), 60, frameSize); 
+	cv::VideoWriter dropVid(DROP_VIDEO_PATH, cv::VideoWriter::fourcc('m', 'p', '4', 'v'), 60, frameSize); 
 		
 	// do not proceed if the video cannot be read
 	if (!cap.isOpened()){
@@ -132,8 +131,8 @@ inline void spawnCoinsOnFrame(
 	const std::array<CoinSpawnInfo, COINS_COUNT>& _coinSpawnInfo, 
 	const std::vector<cv::Mat>& _coins,
 	const std::vector<cv::Mat>& _coinsMasks,
-	const size_t _frameIdx, 
-	const size_t _frameHeight)
+	const size_t& _frameIdx, 
+	const size_t& _frameHeight)
 {
 	for (const CoinSpawnInfo& aCoinInfo : _coinSpawnInfo)
 	{
